@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dfa name="oddOnes" alphabet="1">
+	<states>
+		<accept>
+			<sOdd/>
+		</accept>
+		<reject>
+			<sEven/>
+		</reject>
+	</states>
+	<initialState><sEven/></initialState>
+	<transitions>
+		<sEven>
+			<sOdd>1</sOdd>
+		</sEven>
+		<sOdd>
+			<sEven>1</sEven>
+		</sOdd>
+	</transitions>
+</dfa>

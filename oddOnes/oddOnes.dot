@@ -1,0 +1,9 @@
+digraph oddOnes {
+	rankdir=LR;
+	sOdd [label="" style="" shape="circle" peripheries=2];
+	sEven [label="" style="" shape="circle" peripheries=1];
+	reset [label="" style="invis" shape="point" peripheries=1];
+	sOdd->sEven [label="1"];
+	sEven->sOdd [label="1"];
+	reset->sEven [label=""];
+}
