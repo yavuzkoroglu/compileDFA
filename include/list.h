@@ -33,16 +33,17 @@
 #ifdef DECLARE_LIST_OF
 	#undef DECLARE_LIST_OF
 #endif
-#define DECLARE_LIST_OF(Object,capacity,size,objects,abbreviation)		\
-	typedef struct Object##ListBody {									\
-		Object* objects[capacity];			 							\
-		unsigned int size;												\
-	} Object##List;														\
-	Object##List* initialize_##abbreviation(Object##List*);				\
-	void add##Object##_##abbreviation(Object##List*,Object*);			\
-	Object##List* listOf_##abbreviation(Object##List*,Object##Array*);	\
-	Object* get_##abbreviation(Object##List*,unsigned int);				\
-	void clear_##abbreviation(Object##List*);							\
+#define DECLARE_LIST_OF(Object,capacity,size,objects,abbreviation)			\
+	typedef struct Object##ListBody {										\
+		Object* objects[capacity];			 								\
+		unsigned int size;													\
+	} Object##List;															\
+	Object##List* initialize_##abbreviation(Object##List*);					\
+	void add##Object##_##abbreviation(Object##List*,Object*);				\
+	Object##List* appendArray_##abbreviation(Object##List*,Object##Array*);	\
+	Object##List* listOf_##abbreviation(Object##List*,Object##Array*);		\
+	Object* get_##abbreviation(Object##List*,unsigned int);					\
+	void clear_##abbreviation(Object##List*);								\
 	char* toString_##abbreviation(char*,const Object##List*)
 
 #ifdef IMPLEMENT_ARRAY_FUNCTIONS_OF
@@ -134,17 +135,24 @@
 		list->objs[list->size++] = element;										\
 		ASSERT_LIST(list,size,cap);												\
 	}																			\
-	Object##List* listOf_##abbr(Object##List* list, Object##Array* array)		\
+	Object##List* appendArray_##abbr(Object##List* list, Object##Array* array)	\
 	{																			\
 		DECLARE_FUNCTION(listOf_##abbr);										\
 		Object* obj;															\
 		ASSERT_ARRAY(array,size,cap);											\
-		list = initialize_##abbr(list);											\
 		ASSERT_LIST(list,size,cap);												\
 		for (obj = array->aobjs; obj < array->aobjs + array->size; obj++)		\
 			add##Object##_##abbr(list, obj);									\
 		ASSERT_LIST(list,size,cap);												\
 		return list;															\
+	}																			\
+	Object##List* listOf_##abbr(Object##List* list, Object##Array* array)		\
+	{																			\
+		DECLARE_FUNCTION(listOf_##abbr);										\
+		ASSERT_ARRAY(array,size,cap);											\
+		list = initialize_##abbr(list);											\
+		ASSERT_LIST(list,size,cap);												\
+		return appendArray_##abbr(list, array);									\
 	}																			\
 	Object* get_##abbr(Object##List* list, unsigned int index)					\
 	{																			\

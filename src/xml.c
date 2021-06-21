@@ -613,7 +613,8 @@ Xml* fromString_xml(Xml* xml, const char* xmlstr)
 	/* Skip spaces. */
 	for (; (*ptr) && isspace(*ptr); ptr++);
 
-	ASSERT_EMPTY(ptr);
+	if (*ptr)
+		warning(MSG_REPORT(ptr));
 	return xml;
 }
 
